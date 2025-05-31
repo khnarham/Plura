@@ -35,6 +35,7 @@ const FunnelEditorSidebar = ({ subaccountId }: Props) => {
         defaultValue="Settings"
       >
         <SheetContent
+        // @ts-ignore
           showX={false}
           side="right"
           className={clsx(
@@ -45,6 +46,7 @@ const FunnelEditorSidebar = ({ subaccountId }: Props) => {
           <TabList />
         </SheetContent>
         <SheetContent
+        // @ts-ignore
           showX={false}
           side="right"
           className={clsx(

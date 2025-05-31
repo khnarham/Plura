@@ -18,11 +18,11 @@ import { stripe } from '@/lib/stripe/stripe-action'
 
 
 type Props = {
-  params: { agencyid: string }
+  params: Promise<{ agencyid: string }>
 }
 
 const page = async ({ params }: Props) => {
-  //CHALLENGE : Create the add on  products
+   const {agencyid} = await params
   const addOns = await stripe.products.list({
     ids: addOnProducts.map((product) => product.id),
     expand: ['data.default_price'],
@@ -30,7 +30,7 @@ const page = async ({ params }: Props) => {
 
   const agencySubscription = await db.agency.findUnique({
     where: {
-      id: params.agencyid,
+      id: agencyid,
     },
     select: {
       customerId: true,

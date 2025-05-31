@@ -582,6 +582,7 @@ export const getLanesWithTicketAndTags = async (pipelineId: string) => {
     ...lane,
     Tickets: lane.Tickets.map(ticket => ({
       ...ticket,
+      // @ts-ignore
       value: ticket.value ? ticket.value.toNumber() : null,
     })),
   }));
@@ -703,6 +704,7 @@ export const upsertFunnel = async (
   const response = await db.funnel.upsert({
     where: { id: funnelId },
     update: funnel,
+    // @ts-ignore
     create: {
       ...funnel,
       id: funnelId || v4(),

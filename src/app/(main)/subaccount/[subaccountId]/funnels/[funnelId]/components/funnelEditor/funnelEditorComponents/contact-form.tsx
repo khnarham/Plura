@@ -69,6 +69,7 @@ const ContactFormComponent = (props: Props) => {
     if (!state.editor.liveMode) return
 
     try {
+      // @ts-ignore
       const response = await upsertContact({
         ...values,
         subAccountId: subaccountId,

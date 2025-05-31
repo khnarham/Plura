@@ -26,9 +26,9 @@ import React from 'react'
 const Page = async ({
   params,
 }: {
-  params: { agencyid: string }
-  searchParams: { code: string }
+  params: Promise<{ agencyid: string }>
 }) => {
+  const {agencyid} = await params
   let currency = 'USD'
   let sessions
   let totalClosedSessions
@@ -42,7 +42,7 @@ const Page = async ({
 
   const agencyDetails = await db.agency.findUnique({
     where: {
-      id: params.agencyid,
+      id: agencyid,
     },
   })
 
@@ -50,7 +50,7 @@ const Page = async ({
 
   const subaccounts = await db.subAccount.findMany({
     where: {
-      agencyId: params.agencyid,
+      agencyId: agencyid,
     },
   })
 
@@ -200,15 +200,16 @@ const Page = async ({
             <AreaChart
               className="text-sm stroke-primary"
               data={[
-                ...totalClosedSessions!.map((session) => ({
+                ...(totalClosedSessions?.map((session) => ({
                   created: session.created,
                   amount_total: session.amount_total,
-                })),
-                ...totalPendingSessions!.map((session) => ({
+                })) || []),
+                ...(totalPendingSessions?.map((session) => ({
                   created: session.created,
                   amount_total: session.amount_total,
-              }))
-                ]}
+                })) || [])
+              ]}
+              
               index="created"
               categories={['amount_total']}
               colors={['primary']}

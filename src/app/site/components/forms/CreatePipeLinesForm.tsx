@@ -68,6 +68,7 @@ const CreatePipelineForm: React.FC<CreatePipelineFormProps> = ({
   const onSubmit = async (values: z.infer<typeof CreatePipelineFormSchema>) => {
     if (!subAccountId) return
     try {
+      // @ts-ignore
       const response = await upsertPipeline({
         ...values,
         id: defaultData?.id,

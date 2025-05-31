@@ -8,8 +8,9 @@ import FunnelsDataTable from './date-tabel'
 import { columns } from './column'
 import { getFunnels } from '@/lib/quries'
 
-const Funnels = async ({ params }: { params: { subaccountId: string } }) => {
-  const funnels = await getFunnels(params.subaccountId)
+const Funnels = async ({ params }: { params: Promise<{ subaccountId: string }> }) => {
+  const {subaccountId} = await params
+  const funnels = await getFunnels(subaccountId)
   if (!funnels) return null
 
   return (
@@ -22,7 +23,7 @@ const Funnels = async ({ params }: { params: { subaccountId: string } }) => {
           </>
         }
         modalChildren={
-          <FunnelForm subAccountId={params.subaccountId}></FunnelForm>
+          <FunnelForm subAccountId={subaccountId}></FunnelForm>
         }
         filterValue="name"
         columns={columns}

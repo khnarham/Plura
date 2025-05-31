@@ -6,10 +6,11 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 
 type Props = {
-    params:{agencyid: string}
+    params:Promise<{agencyid: string}>
 }
 
 const SettingPage = async({params}: Props) => {
+    const {agencyid} = await params
     const user = await currentUser();
     if(!user){
         redirect('/site')
@@ -23,7 +24,7 @@ const SettingPage = async({params}: Props) => {
     if(!userDetails) return null;
     const agencyDetails = await db.agency.findUnique({
         where:{
-            id: params.agencyid
+            id: agencyid
         },
         include:{
             SubAccount: true
@@ -39,7 +40,7 @@ const SettingPage = async({params}: Props) => {
        />
           <UserDetails
         type="agency"
-        id={params.agencyid}
+        id={agencyid}
         subAccounts={subAccounts}
         userData={userDetails}
       />

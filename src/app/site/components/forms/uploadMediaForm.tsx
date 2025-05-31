@@ -49,6 +49,7 @@ const UploadMediaForm = ({ subaccountId }: Props) => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      // @ts-ignore
       const response = await createMedia(subaccountId, values)
       await saveActivityLogsNotification({
         agencyId: undefined,

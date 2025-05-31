@@ -117,6 +117,7 @@ const TicketForm = ({ getNewTicket, laneId, subaccountId }: Props) => {
     if (!laneId) return
     try {
       const response = await upsertTicket(
+        // @ts-ignore
         {
           ...values,
           laneId,

@@ -3,24 +3,25 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 
 type Props = {
-    params:{subaccountId: string}
+    params:Promise<{subaccountId: string}>
 }
 
 const Piplelines = async({params}: Props) => {
+  const {subaccountId} = await params
   const pipeLinesExists = await db.pipeline.findFirst({
-    where:{subAccountId: params.subaccountId}
+    where:{subAccountId: subaccountId}
   }) 
 
   if(pipeLinesExists){
-    return redirect(`/subaccount/${params.subaccountId}/pipelines/${pipeLinesExists.id}`)
+    return redirect(`/subaccount/${subaccountId}/pipelines/${pipeLinesExists.id}`)
   }
 
   try {
      const response = await db.pipeline.create({
-        data:{name: 'First Pipelines' , subAccountId: params.subaccountId}
+        data:{name: 'First Pipelines' , subAccountId:subaccountId}
      })
 
-     redirect(`/subaccount/${params.subaccountId}/pipelines/${response.id}`)
+     redirect(`/subaccount/${subaccountId}/pipelines/${response.id}`)
   } catch (error) {
      console.error(error)
      return null

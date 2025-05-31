@@ -67,6 +67,7 @@ const CreateLaneForm: React.FC<CreateLaneFormProps> = ({
   const onSubmit = async (values: z.infer<typeof LaneFormSchema>) => {
     if (!pipelineId) return
     try {
+      // @ts-ignore
       const response = await upsertLane({
         ...values,
         id: defaultData?.id,

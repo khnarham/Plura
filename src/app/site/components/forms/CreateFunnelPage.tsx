@@ -71,6 +71,7 @@ const CreateFunnelPage: React.FC<CreateFunnelPageProps> = ({
     try {
       const response = await upsertFunnelPage(
         subaccountId,
+        // @ts-ignore
         {
           ...values,
           id: defaultData?.id || v4(),

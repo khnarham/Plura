@@ -31,19 +31,21 @@ import DeleteButton from './components/deleteButton'
 
 
 type Props = {
-  params: { agencyId: string }
+   params: Promise<{ agencyid: string }>
+
 }
 
 const AllSubaccountsPage = async ({ params }: Props) => {
   const user = await getAuthUserDetails()
   if (!user) return
+  const {agencyid} = await params
 
   return (
     <AlertDialog>
       <div className="flex flex-col ">
         <CreateSubaccountButton
           user={user}
-          id={params.agencyId}
+          id={agencyid}
           className="w-[200px] self-end m-6"
         />
         <Command className="rounded-lg bg-transparent">

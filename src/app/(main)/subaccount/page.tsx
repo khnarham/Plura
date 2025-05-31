@@ -4,10 +4,11 @@ import { redirect } from 'next/navigation'
 import React from 'react'
 
 type Props = {
-  searchParams: { state: string; code: string }
+  searchParams: Promise<{ state: string; code: string }>
 }
 
 const SubAccountMainPage = async ({ searchParams }: Props) => {
+  const params = await searchParams
   const agencyId = await verifyAndAcceptInvitation()
 
   if (!agencyId) {
@@ -21,12 +22,12 @@ const SubAccountMainPage = async ({ searchParams }: Props) => {
     (permission) => permission.access === true
   )
 
-  if (searchParams.state) {
-    const statePath = searchParams.state.split('___')[0]
-    const stateSubaccountId = searchParams.state.split('___')[1]
+  if (params.state) {
+    const statePath = params.state.split('___')[0]
+    const stateSubaccountId = params.state.split('___')[1]
     if (!stateSubaccountId) return 
     return redirect(
-      `/subaccount/${stateSubaccountId}/${statePath}?code=${searchParams.code}`
+      `/subaccount/${stateSubaccountId}/${statePath}?code=${params.code}`
     )
   }
 

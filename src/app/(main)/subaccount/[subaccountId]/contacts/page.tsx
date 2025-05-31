@@ -18,17 +18,18 @@ import CraeteContactButton from './components'
 
 
 type Props = {
-  params: { subaccountId: string }
+  params: Promise<{ subaccountId: string }>
 }
 
 const ContactPage = async ({ params }: Props) => {
+  const {subaccountId} = await params
   type SubAccountWithContacts = SubAccount & {
     Contact: (Contact & { Ticket: Ticket[] })[]
   }
 
   const contacts = (await db.subAccount.findUnique({
     where: {
-      id: params.subaccountId,
+      id: subaccountId,
     },
 
     include: {
@@ -66,7 +67,7 @@ const ContactPage = async ({ params }: Props) => {
   return (
     <BlurPage>
       <h1 className="text-4xl p-4">Contacts</h1>
-      <CraeteContactButton subaccountId={params.subaccountId} />
+      <CraeteContactButton subaccountId={subaccountId} />
       <Table>
         <TableHeader>
           <TableRow>

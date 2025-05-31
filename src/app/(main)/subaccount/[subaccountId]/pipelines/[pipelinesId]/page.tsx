@@ -8,26 +8,27 @@ import PipelineInfoBar from './components/PipelinesInfoBar'
 import PipelineView from './components/PipeLinesView'
 
 type Props = {
-    params: {subaccountId: string , pipelinesId: string}
+    params: Promise<{subaccountId: string , pipelinesId: string}>
 }
 
 const PipelinesPage = async({params}: Props) => {
-    const pipeLinesDetails = await getPipelineDetails(params.pipelinesId)
+  const {subaccountId , pipelinesId } = await params
+    const pipeLinesDetails = await getPipelineDetails(pipelinesId)
     if(!pipeLinesDetails){
-        return redirect(`/subaccount/${params.subaccountId}/pipelines`)
+        return redirect(`/subaccount/${subaccountId}/pipelines`)
     }
     const pipelines = await db.pipeline.findMany({
-        where:{subAccountId: params.subaccountId}
+        where:{subAccountId: subaccountId}
     })
-    const lanes = await getLanesWithTicketAndTags(params.pipelinesId)
+    const lanes = await getLanesWithTicketAndTags(pipelinesId)
   return (
     <Tabs defaultValue='view'
     className='w-full'
     >
       <TabsList className="bg-transparent border-b-2 h-16 w-full justify-between mb-4">
       <PipelineInfoBar
-           subAccountId={params.subaccountId}
-           pipelineId={params.pipelinesId}
+           subAccountId={subaccountId}
+           pipelineId={pipelinesId}
            pipelines={pipelines}
            />
                <div>
@@ -40,8 +41,8 @@ const PipelinesPage = async({params}: Props) => {
       //@ts-ignore
           lanes={lanes}
           pipelineDetails={pipeLinesDetails}
-          pipelineId={params.pipelinesId}
-          subaccountId={params.subaccountId}
+          pipelineId={pipelinesId}
+          subaccountId={subaccountId}
           updateLanesOrder={updateLanesOrder}
           updateTicketsOrder={updateTicketsOrder}
         />
