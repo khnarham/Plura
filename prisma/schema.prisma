@@ -345,8 +345,9 @@ model Subscription {
   customerId           String
   currentPeriodEndDate DateTime
   subscritiptionId     String
-  agencyId             String?
-  Agency               Agency?  @relation(fields: [agencyId], references: [id])
+  agencyId  String?  @unique
+  Agency    Agency?  @relation(fields: [agencyId], references: [id])
+
 }
 
 model AddOns {
